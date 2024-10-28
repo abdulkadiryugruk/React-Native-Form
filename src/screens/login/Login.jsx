@@ -5,43 +5,48 @@ import {
   SafeAreaView,
   Pressable,
   Image,
+  Alert
 } from "react-native";
-import React, { useState } from "react";
+import React from "react";
 import { CustomTextInput, Button } from "../../components";
+import { useDispatch, useSelector } from "react-redux";
+import { setEmail, setPassword, setLogin } from "../../redux/userSlice";
 
-const SignUp = ({ navigation }) => {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+const Login = ({ navigation }) => {
+  const { email, password } = useSelector((state) => state.user);
+
+  const dispatch = useDispatch();
+
   return (
     <SafeAreaView style={styles.container}>
-      <Text style={styles.topText}>SignUp</Text>
+      <Text style={styles.topText}>Login</Text>
 
-      <Image source={require("../../../assets/images/signUp.png")} />
+      <Image source={require("../../../assets/images/home.png")} />
 
       <CustomTextInput
         isSecureText={false}
-        onChangeText={setEmail}
+        onChangeText={(text) => dispatch(setEmail(text))}
         value={email}
-        placeholder="Enter email"
-      />
-      <CustomTextInput
-        isSecureText={true}
-        onChangeText={setEmail}
-        value={email}
-        placeholder="Enter password"
+        placeholder="Email"
       />
 
       <CustomTextInput
         isSecureText={true}
-        onChangeText={setPassword}
+        onChangeText={(password) => dispatch(setPassword(password))}
         value={password}
-        placeholder="Confirm password"
+        placeholder="Password"
       />
-
-      <Button
-        title={"Sign Up"}
-        pressedButton="lightgrey"
-        buttonColor="#20c3af"
+      <Pressable
+      style={{width:'30%', alignSelf: 'flex-end', right:'10%'}}
+      onPress={()=>{Alert.alert('bilgiler','email: test@test.com \npassword: 123456', [{text:'tamam'}])}}
+      >
+      <Text style={styles.forgot}>Forgot your {"\n"} Password?</Text>
+      </Pressable>
+      <Button 
+        title={"Login"} 
+      onPress={() => dispatch(setLogin())} 
+      pressedButton="lightgrey" 
+      buttonColor="#20c3af" 
       />
 
       <Text style={{ textAlign: "center" }}>or</Text>
@@ -70,18 +75,18 @@ const SignUp = ({ navigation }) => {
       </View>
       <Pressable
         style={styles.account}
-        onPress={() => navigation.navigate("Login")}
+        onPress={() => navigation.navigate("SignUp")}
       >
         <Text>
-          Already have an account?
-          <Text style={{ color: "#ffb19d" }}> LogIn</Text>
+          Don't have an account?{" "}
+          <Text style={{ color: "#ffb19d" }}> Sign Up</Text>
         </Text>
       </Pressable>
     </SafeAreaView>
   );
 };
 
-export default SignUp;
+export default Login;
 
 const styles = StyleSheet.create({
   container: {
@@ -99,8 +104,9 @@ const styles = StyleSheet.create({
     marginTop: 25,
   },
   forgot: {
-    width: "80%",
+    width: "100%",
     textAlign: "right",
+    
   },
   or: {
     flexDirection: "row",

@@ -10,6 +10,7 @@ const CustomTextInput = ({isSecureText, onChangeText, value,placeholder}) => {
 	  onChangeText={onChangeText}
 	  value={value}
 	  placeholder={placeholder}
+	  autoCapitalize="none"
 	  />
 	</View>
   )
